@@ -7,13 +7,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * packageName :  hello.exception.servlet
+ * fileName : ServletExController
+ * author :  eomjin-ung
+ * date : 2023/03/11
+ * description :
+ * ===========================================================
+ * DATE                 AUTHOR              NOTE
+ * -----------------------------------------------------------
+ * 2023/03/11           eomjin-ung          init
+ */
+
 @Slf4j
 @Controller
 public class ServletExController {
 
     @GetMapping("/error-ex")
     public void errorEx() {
-        throw new RuntimeException("예외 발생!");
+        throw new RuntimeException("에러 발생");
     }
 
     @GetMapping("/error-404")
@@ -21,13 +33,9 @@ public class ServletExController {
         response.sendError(404, "404 오류!");
     }
 
-    @GetMapping("/error-400")
-    public void error400(HttpServletResponse response) throws IOException {
-        response.sendError(400, "400 오류!");
-    }
-
     @GetMapping("/error-500")
     public void error500(HttpServletResponse response) throws IOException {
-        response.sendError(500);
+        response.sendError(500, "500 오류!");
     }
 }
+
