@@ -1,24 +1,25 @@
-package hello.advanced.v2;
+package hello.advanced.app.v1.hellotrace;
 
-import hello.advanced.v1.trace.TraceId;
-import hello.advanced.v1.trace.TraceStatus;
+import hello.advanced.trace.TraceId;
+import hello.advanced.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * packageName :  hello.advanced.v1.hellotrace
- * fileName : HelloTraceV2
+ * fileName : HelloTraceV1
  * author :  JinWoong
- * date : 2023/04/03
+ * date : 2023/04/02
  * description :
  * ===========================================================
  * DATE                 AUTHOR              NOTE
  * -----------------------------------------------------------
- * 2023/04/03           eomjin-ung          init
+ * 2023/04/02           eomjin-ung          init
  */
+
 @Slf4j
 @Component
-public class HelloTraceV2 {
+public class HelloTraceV1 {
 
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
@@ -31,16 +32,6 @@ public class HelloTraceV2 {
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX,
                 traceId.getLevel()), message);
         return new TraceStatus(traceId, startTimeMs, message);
-    }
-
-    // V2에서 추가
-    public TraceStatus beginSync(TraceId beforeTraceId, String message){
-        TraceId nextId = beforeTraceId.createNextId();
-        long startTimeMs = System.currentTimeMillis();
-        // 로그 출력
-        log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX,
-                nextId.getLevel()), message);
-        return new TraceStatus(nextId, startTimeMs, message);
     }
 
     public void end(TraceStatus status){
@@ -68,7 +59,7 @@ public class HelloTraceV2 {
     private static String addSpace(String prefix, int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++) {
-            sb.append( (i == level - 1) ? "|" + prefix : "|   ");
+            sb.append( (i == level - 1) ? "|" + prefix : "| ");
         }
         return sb.toString();
     }

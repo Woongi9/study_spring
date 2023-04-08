@@ -1,4 +1,4 @@
-package hello.advanced.v1.trace;
+package hello.advanced.trace;
 
 import java.util.UUID;
 
