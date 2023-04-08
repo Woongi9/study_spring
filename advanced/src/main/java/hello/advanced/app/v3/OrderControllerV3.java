@@ -1,13 +1,14 @@
-package hello.advanced.app.v2;
+package hello.advanced.app.v3;
 
-import hello.advanced.trace.TraceId;
 import hello.advanced.trace.TraceStatus;
+import hello.advanced.trace.logtrace.LogTrace;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * packageName :  hello.advanced.v0
- * fileName : OrderService
+ * fileName : OrderController
  * author :  JinWoong
  * date : 2023/04/02
  * description :
@@ -17,22 +18,26 @@ import org.springframework.stereotype.Service;
  * 2023/04/02           eomjin-ung          init
  */
 
-@Service
+@RestController
 @RequiredArgsConstructor
-public class OrderServiceV2 {
+public class OrderControllerV3 {
 
-    private final OrderRepositoryV2 orderRepository;
-    private final HelloTraceV2 trace;
+    private final OrderServiceV3 orderService;
+    private final LogTrace trace;
 
-    public void orderItem(TraceId traceId, String itemId) {
+    @GetMapping("/v3/request")
+    public String request(String itemId) {
+
         TraceStatus status = null;
         try {
-            status = trace.beginSync(traceId, "OrderService.request()");
-            orderRepository.save(status.getTraceId(), itemId);
+            status = trace.begin("OrderController.request()");
+            orderService.orderItem(itemId);
             trace.end(status);
+            return "ok";
         } catch (Exception e) {
             trace.exception(status, e);
             throw e; // 예외를 꼭 다시 던져주어야 한다.
         }
+
     }
 }
