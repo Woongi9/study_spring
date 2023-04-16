@@ -1,0 +1,39 @@
+package hello.proxy.config;
+
+import hello.proxy.app.v1.*;
+import hello.proxy.app.v2.OrderControllerV2;
+import hello.proxy.app.v2.OrderRepositoryV2;
+import hello.proxy.app.v2.OrderServiceV2;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * packageName :  hello.proxy.config
+ * fileName : AppV2Config
+ * author :  JinWoong
+ * date : 2023/04/16
+ * description :
+ * ===========================================================
+ * DATE                 AUTHOR              NOTE
+ * -----------------------------------------------------------
+ * 2023/04/16           eomjin-ung          init
+ */
+
+@Configuration
+public class AppV2Config {
+
+    @Bean
+    public OrderControllerV2 orderControllerV2() {
+        return new OrderControllerV2(orderServiceV2());
+    }
+
+    @Bean
+    public OrderServiceV2 orderServiceV2() {
+        return new OrderServiceV2(orderRepositoryV2());
+    }
+
+    @Bean
+    public OrderRepositoryV2 orderRepositoryV2() {
+        return new OrderRepositoryV2();
+    }
+}
