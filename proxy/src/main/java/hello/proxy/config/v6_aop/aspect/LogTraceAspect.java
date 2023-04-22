@@ -1,17 +1,17 @@
-package hello.proxy.config.v3_proxyfactory.advice;
+package hello.proxy.config.v6_aop.aspect;
 
 import hello.proxy.trace.TraceStatus;
 import hello.proxy.trace.logtrace.LogTrace;
-import lombok.RequiredArgsConstructor;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.util.PatternMatchUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 
 import java.lang.reflect.Method;
 
 /**
- * packageName :  hello.proxy.config.v3_proxyfactory
- * fileName : LogTraceAdvice
+ * packageName :  hello.proxy.config.v6_aop.aspect
+ * fileName : LogTraceAspect
  * author :  JinWoong
  * date : 2023/04/22
  * description :
@@ -21,28 +21,28 @@ import java.lang.reflect.Method;
  * 2023/04/22           eomjin-ung          init
  */
 
-public class LogTraceAdvice implements MethodInterceptor {
+@Slf4j
+@Aspect
+public class LogTraceAspect {
 
     private final LogTrace logTrace;
 
-    public LogTraceAdvice(LogTrace logTrace) {
+    public LogTraceAspect(LogTrace logTrace) {
         this.logTrace = logTrace;
     }
 
-    @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
+    // advisor
+    @Around("execution(* hello.proxy.app..*(..))")  // pointcut
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+        // advice
         TraceStatus status = null;
-
         try {
-            Method method = invocation.getMethod();
-            String message = method.getDeclaringClass().getSimpleName()
-                    + "."
-                    + method.getName()
-                    + "()";
+            String message = joinPoint.getSignature().toShortString();
             status = logTrace.begin(message);
 
             // 로직 호출
-            Object result = invocation.proceed();
+            Object result = joinPoint.proceed();
+
             logTrace.end(status);
             return result;
         } catch (Exception e) {
