@@ -712,7 +712,6 @@ public class QuerydslBasicTest {
 		em.flush();
 		em.clear();
 
-
 	}
 
 }

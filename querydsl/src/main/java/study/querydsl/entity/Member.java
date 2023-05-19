@@ -9,9 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * packageName :  study.querydsl.entity
@@ -29,6 +31,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "username", "age"})
 public class Member {
 
 	@Id
@@ -42,6 +45,14 @@ public class Member {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
+	public Member(String username) {
+		this(username, 0);
+	}
+
+	public Member(String username, int age) {
+		this(username, age, null);
+	}
+
 	public Member(String username, int age, Team team) {
 		this.username = username;
 		this.age = age;
@@ -51,25 +62,9 @@ public class Member {
 		}
 	}
 
-	public Member(String username, int age) {
-		this(username, age, null);
-	}
-
-	public Member(String username) {
-		this(username, 0);
-	}
-
-	private void changeTeam(Team team) {
+	public void changeTeam(Team team) {
 		this.team = team;
 		team.getMembers().add(this);
 	}
 
-	@Override
-	public String toString() {
-		return "Member{" +
-			"id=" + id +
-			", username='" + username + '\'' +
-			", age=" + age +
-			'}';
-	}
 }
