@@ -30,4 +30,7 @@ public class LogController {
 		log.error("error log");
 		return "ok";
 	}
+	/**
+	 * hotfix
+	 */
 }
